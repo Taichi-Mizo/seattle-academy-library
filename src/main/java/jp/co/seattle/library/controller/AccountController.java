@@ -58,6 +58,25 @@ public class AccountController {
 
 
         // TODO バリデーションチェック、パスワード一致チェック実装
+        //バリデーションチェック、email, password, passwordforcheckの入力内容が半角英数字であることを確認。
+        //メールアドレスは、半角英数字と記号で構成される。
+
+        boolean isValidEmail = email
+                .matches("^([a-zA-Z0-9])+([a-zA-Z0-9\\._-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9\\._-]+)+$");
+        boolean isValidPw = password.matches("^[A-Za-z0-9]+$");
+        boolean isValidPwforCheck = passwordForCheck.matches("^[A-Za-z0-9]+$");
+
+        if (!isValidEmail || !isValidPw || !isValidPwforCheck) {
+            //遷移して欲しい画面のjsp名
+            model.addAttribute("mailCheck", "半角英数を入力してください");
+            return "createAccount";
+        }
+
+        //パスワードが確認用パスワードと一致するかチェック
+        if (!(password.equals(passwordForCheck))) {
+            model.addAttribute("passwordCheck", "パスワードが一致していません");
+            return "createAccount";
+        }
 
         userInfo.setPassword(password);
         usersService.registUser(userInfo);
