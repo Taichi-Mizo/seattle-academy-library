@@ -9,6 +9,7 @@ import lombok.Data;
  */
 @Configuration
 @Data
+// input info from users is included as follows
 public class BookInfo {
 
     private int bookId;
