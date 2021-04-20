@@ -48,7 +48,7 @@ public class LoginController {
 
         // TODO パスワードとメールアドレスの組み合わせ存在チェック実装
         
-
+        model.addAttribute("noBook", "登録されている書籍がありません。");
 
         // 本の情報を取得して画面側に渡す
         model.addAttribute("bookList", booksService.getBookList());
