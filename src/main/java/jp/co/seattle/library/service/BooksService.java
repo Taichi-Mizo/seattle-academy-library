@@ -46,19 +46,19 @@ public class BooksService {
      * @param bookId 書籍ID
      * @return 書籍情報
      */
+    //登録されているbookIdを持ってくる
     public BookDetailsInfo getBookInfo(int bookId) {
 
-        // JSPに渡すデータを設定する
+        // JSPに渡すデータを設定する。上記で取得したbookIdを元にSQL内の書籍の詳細を呼び出す。
         String sql = "SELECT * FROM books where id ="
                 + bookId;
-
+        
         BookDetailsInfo bookDetailsInfo = jdbcTemplate.queryForObject(sql, new BookDetailsInfoRowMapper());
 
         return bookDetailsInfo;
     }
 
-
-
+    
     /**
      * 書籍を登録する
      *
@@ -75,4 +75,11 @@ public class BooksService {
 
         jdbcTemplate.update(sql);
     }
+
+    //書籍を削除する
+    public void deleteBookInfo(int bookId) {
+        String sql = "delete from books where Id =" + bookId + ";";
+        jdbcTemplate.update(sql);
+    }
+
 }
