@@ -46,19 +46,19 @@ public class BooksService {
      * @param bookId 書籍ID
      * @return 書籍情報
      */
-    //登録されているbookIdを持ってくる
+
+    //登録されているbookIdを取得したあと、そのidの書籍情報を取得する。
     public BookDetailsInfo getBookInfo(int bookId) {
 
         // JSPに渡すデータを設定する。上記で取得したbookIdを元にSQL内の書籍の詳細を呼び出す。
         String sql = "SELECT * FROM books where id ="
                 + bookId;
-        
+        //SQLから取得した
         BookDetailsInfo bookDetailsInfo = jdbcTemplate.queryForObject(sql, new BookDetailsInfoRowMapper());
 
         return bookDetailsInfo;
     }
 
-    
     /**
      * 書籍を登録する
      *
@@ -66,15 +66,30 @@ public class BooksService {
      */
     public void registBook(BookDetailsInfo bookInfo) {
 
-        String sql = "INSERT INTO books (title, author,publisher,thumbnail_name,thumbnail_url,reg_date,upd_date) VALUES ('"
+        String sql = "INSERT INTO books (title,author,publisher,publish_date,thumbnail_url,thumbnail_name,reg_date,upd_date,isbn,comments) VALUES ('"
                 + bookInfo.getTitle() + "','" + bookInfo.getAuthor() + "','" + bookInfo.getPublisher() + "','"
-                + bookInfo.getThumbnailName() + "','"
-                + bookInfo.getThumbnailUrl() + "',"
-                + "sysdate(),"
-                + "sysdate())";
+                + bookInfo.getPublishDate() + "','" + bookInfo.getThumbnailUrl() + "','" + bookInfo.getThumbnail()
+                + "',sysdate(),sysdate(),'"
+                + bookInfo.getIsbn() + "','" + bookInfo.getComments() + "');";
 
         jdbcTemplate.update(sql);
     }
+
+    //方法１：登録したidをSQLから取得する。Q.第二引数のInteger.classとは何か。
+    public int bookId() {
+        String sql = "select max(id) from books;";
+        int bookId = jdbcTemplate.queryForObject(sql, Integer.class);
+
+        return bookId;
+    }
+
+    //    //方法２：登録した書籍情報を取得し、この処理を実行後、取得した情報を返す。
+    //    public BookDetailsInfo getRegistedBookInfo() {
+    //        String sql = "select title, author, publisher, publish_date, thumbnail_url, thumbnail_name, isbn, comments from books where id = (select max(id) from books);";
+    //        BookDetailsInfo registedBookInfo = jdbcTemplate.queryForObject(sql, new BookDetailsInfoRowMapper());
+    //
+    //        return registedBookInfo;
+    //    }
 
     //書籍を削除する
     public void deleteBookInfo(int bookId) {
