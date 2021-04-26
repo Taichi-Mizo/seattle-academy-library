@@ -20,9 +20,14 @@ public class BookDetailsInfoRowMapper implements RowMapper<BookDetailsInfo> {
         bookDetailsInfo.setTitle(rs.getString("title"));
         bookDetailsInfo.setAuthor(rs.getString("author"));
         bookDetailsInfo.setPublisher(rs.getString("publisher"));
-        bookDetailsInfo.setThumbnailName(rs.getString("thumbnail_name"));
+        bookDetailsInfo.setPublishDate(rs.getString("publish_date"));
         bookDetailsInfo.setThumbnailUrl(rs.getString("thumbnail_url"));
+        bookDetailsInfo.setThumbnail(rs.getString("thumbnail_name"));
+        bookDetailsInfo.setIsbn(rs.getString("isbn"));
+        bookDetailsInfo.setComments(rs.getString("comments"));
         return bookDetailsInfo;
     }
 
 }
+
+//書籍詳細画面にISBNとcomments(説明文)を追加済み。
