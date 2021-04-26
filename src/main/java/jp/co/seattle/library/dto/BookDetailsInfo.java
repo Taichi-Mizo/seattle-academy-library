@@ -30,7 +30,6 @@ public class BookDetailsInfo {
 
     private String comments;
 
-
     public BookDetailsInfo() {
 
     }
