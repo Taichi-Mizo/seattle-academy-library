@@ -83,13 +83,26 @@ public class BooksService {
         return bookId;
     }
 
-    //    //方法２：登録した書籍情報を取得し、この処理を実行後、取得した情報を返す。
-    //    public BookDetailsInfo getRegistedBookInfo() {
-    //        String sql = "select title, author, publisher, publish_date, thumbnail_url, thumbnail_name, isbn, comments from books where id = (select max(id) from books);";
-    //        BookDetailsInfo registedBookInfo = jdbcTemplate.queryForObject(sql, new BookDetailsInfoRowMapper());
-    //
-    //        return registedBookInfo;
-    //    }
+    //SQLコマンドをUPDATEで更新する。登録日時はそのままにして、更新日時のみを更新するにはどうすればいいのか。
+    public void editBook(BookDetailsInfo bookInfo) {
+        String sql = "UPDATE books SET title='" + bookInfo.getTitle() + "',author='" + bookInfo.getAuthor()
+                + "',publisher='" + bookInfo.getPublisher()
+                + "',publish_date='" + bookInfo.getPublishDate() + "',thumbnail_url='" + bookInfo.getThumbnailUrl()
+                + "',thumbnail_name='" + bookInfo.getThumbnail()
+                + "',upd_date=" + "sysdate()," + "isbn='" + bookInfo.getIsbn() + "',comments='" + bookInfo.getComments()
+                + "' where id =" + bookInfo.getBookId() + ";";
+
+        jdbcTemplate.update(sql);
+        //編集内容を登録するだけだから、戻り値はなくても良い。
+    }
+
+    //編集した書籍のidをSQLから取得する。
+    public int updatedBookId(BookDetailsInfo bookId) {
+        String sql = "select" + bookId + "from books;";
+        int updatedBookId = jdbcTemplate.queryForObject(sql, Integer.class);
+
+        return updatedBookId;
+    }
 
     //書籍を削除する
     public void deleteBookInfo(int bookId) {
