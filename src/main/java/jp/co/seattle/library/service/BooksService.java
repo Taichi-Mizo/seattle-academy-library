@@ -18,6 +18,10 @@ import jp.co.seattle.library.rowMapper.BookInfoRowMapper;
  * 
  *  booksテーブルに関する処理を実装する
  */
+/**
+ * @author user
+ *
+ */
 @Service
 public class BooksService {
     final static Logger logger = LoggerFactory.getLogger(BooksService.class);
@@ -83,7 +87,11 @@ public class BooksService {
         return bookId;
     }
 
-    //SQLコマンドをUPDATEで更新する。登録日時はそのままにして、更新日時のみを更新するにはどうすればいいのか。
+    /**
+     * SQLコマンドをUPDATEで更新する。
+     * 
+     * @param bookInfo
+     */
     public void editBook(BookDetailsInfo bookInfo) {
         String sql = "UPDATE books SET title='" + bookInfo.getTitle() + "',author='" + bookInfo.getAuthor()
                 + "',publisher='" + bookInfo.getPublisher()
@@ -96,7 +104,11 @@ public class BooksService {
         //編集内容を登録するだけだから、戻り値はなくても良い。
     }
 
-    //編集した書籍のidをSQLから取得する。
+    /**
+     * 編集した書籍のidをSQLから取得する。
+     * @param bookId
+     * @return
+     */
     public int updatedBookId(BookDetailsInfo bookId) {
         String sql = "select" + bookId + "from books;";
         int updatedBookId = jdbcTemplate.queryForObject(sql, Integer.class);
