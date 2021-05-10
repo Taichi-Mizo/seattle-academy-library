@@ -122,4 +122,16 @@ public class BooksService {
         jdbcTemplate.update(sql);
     }
 
+    //sql1:詳細画面から取得したbookIdを用いて,lendMngテーブルに書籍情報の登録をする。
+    //sql2:その後、同じメソッド内で、MySQLから登録した書籍の詳細を取得(bookDetailsInfo)して、jspに返す。
+    //    public BookDetailsInfo lendBook(int bookId) {
+    //        String sql1 = "insert into lendMng()";
+    //        String sql2 = "SELECT * FROM lendMng where id ="
+    //                + bookId;
+    //        //lendMngテーブルで、bookId
+    //        BookDetailsInfo bookDetailsInfo = jdbcTemplate.queryForObject(sql2, new BookDetailsInfoRowMapper());
+    //
+    //        return bookDetailsInfo;
+    //    }
+
 }

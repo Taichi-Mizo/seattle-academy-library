@@ -110,7 +110,7 @@ public class EditBookController {
 
         //バリデーションチェック
         boolean isValidIsbn = isbn.matches("^[0-9]+$");
-        boolean flag1 = false;
+        boolean isError = false;
         //boolean flag2 = false;
 
         //isbn、dateでエラー、もしくは両方でエラーが起きた時にaddBookに戻れるように、
@@ -119,7 +119,7 @@ public class EditBookController {
         //入力するのは数字だけ。0-9。
         StringBuilder sb = new StringBuilder(isbn);
         if (!isValidIsbn || sb.length() != 10 && sb.length() != 13) {
-            flag1 = true;
+            isError = true;
             model.addAttribute("errorMsg", "ISBNの桁数または半角数字が正しくありません");
         }
 
@@ -131,11 +131,11 @@ public class EditBookController {
             sdf.parse(publishDate);
 
         } catch (ParseException pe) {
-            flag1 = true;
+            isError = true;
             model.addAttribute("wrongDate", "出版日は半角数字のYYYYMMDD形式で入力して下さい");
         }
 
-        if (flag1) {
+        if (isError) {
             return "editBook";
         }
 
