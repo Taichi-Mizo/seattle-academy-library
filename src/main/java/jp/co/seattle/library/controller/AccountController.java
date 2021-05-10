@@ -58,7 +58,7 @@ public class AccountController {
 
 
         // TODO バリデーションチェック、パスワード一致チェック実装
-        //バリデーションチェック、email, password, passwordforcheckの入力ないよが半角英数字であることを確認。
+        //バリデーションチェック、email, password, passwordforcheckの入力内容が半角英数字であることを確認。
         //メールアドレスは、半角英数字と記号で構成される。
 
         boolean isValidEmail = email

@@ -60,6 +60,11 @@
                     </div>
                     <div class="content_right">
                         <div>
+                            <c:if test="${!empty wrongDate or !empty errorMsg}">
+                                <div class="error">${wrongDate}<br>${errorMsg}</div>
+                            </c:if>
+                        </div>
+                        <div>
                             <span>書籍名</span><span class="care care2">必須</span>
                             <c:if test="${!empty bookDetailsInfo}">
                                 <input type="text" name="title" value="${bookDetailsInfo.title}">
@@ -94,9 +99,6 @@
                             <c:if test="${empty bookDetailsInfo}">
                                 <input type="text" name="publishDate">
                             </c:if>
-                            <c:if test="${!empty wrongDate}">
-                                <div class="error">${wrongDate}</div>
-                            </c:if>
                         </div>
                         <div>
                             <span>ISBN</span>
@@ -105,9 +107,6 @@
                             </c:if>
                             <c:if test="${empty bookDetailsInfo}">
                                 <input type="text" name="isbn" autocomplete="off">
-                            </c:if>
-                            <c:if test="${!empty errorMsg}">
-                                <div class="error">${errorMsg}</div>
                             </c:if>
                         </div>
                         <div>

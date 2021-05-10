@@ -22,6 +22,10 @@ public class BookInfo {
 
     private String publishDate;
 
+    private String isbn;
+
+    private String comments;
+
     private String thumbnail;
 
     public BookInfo() {
@@ -29,12 +33,15 @@ public class BookInfo {
     }
 
     // コンストラクタ
-    public BookInfo(int bookId, String title, String author, String publisher, String publishDate, String thumbnail) {
+    public BookInfo(int bookId, String title, String author, String publisher, String publishDate, String isbn,
+            String comments, String thumbnail) {
         this.bookId = bookId;
         this.title = title;
         this.author = author;
         this.publisher = publisher;
         this.publishDate = publishDate;
+        this.isbn = isbn;
+        this.comments = comments;
         this.thumbnail = thumbnail;
     }
 

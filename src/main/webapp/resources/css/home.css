@@ -144,6 +144,7 @@ img.book_img {
 	font-size: 12px;
 }
 
+/* ホーム画面のレイアウト */
 a.btn_add_book, a.btn_bulk_book, button.btn_addBook, button.btn_editBook,
 	button.btn_deleteBook, button.btn_rentBook, button.btn_returnBook,
 	button.btn_bulkRegist {
@@ -232,7 +233,7 @@ a:hover, button:hover {
 	display: flex;
 	justify-content: center;
 }
-
+/* 一括画面のファイル選択のボタン */
 .button.btn_bulkRegist {
 	display: flex;
 	justify-content: center;
@@ -300,6 +301,9 @@ hr.border_add {
 	color: #ffffff;
 }
 
+/* ここからbulkRegist */
+/* bulk_fromがjspで指定したクラス名。
+ */
 .bulk_form {
 	text-align: center;
 }
