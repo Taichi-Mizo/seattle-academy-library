@@ -110,7 +110,8 @@ public class EditBookController {
 
         //バリデーションチェック
         boolean isValidIsbn = isbn.matches("^[0-9]+$");
-        boolean flag = false;
+        boolean flag1 = false;
+        //boolean flag2 = false;
 
         //isbn、dateでエラー、もしくは両方でエラーが起きた時にaddBookに戻れるように、
 
@@ -118,24 +119,42 @@ public class EditBookController {
         //入力するのは数字だけ。0-9。
         StringBuilder sb = new StringBuilder(isbn);
         if (!isValidIsbn || sb.length() != 10 && sb.length() != 13) {
-            flag = true;
-            model.addAttribute("errorMsg", "入力内容が正しくありません");
+            flag1 = true;
+            model.addAttribute("errorMsg", "ISBNの桁数または半角数字が正しくありません");
         }
 
         //日付のvalidation check, //yyyymmdd
+        //半角英数字もバリデーションチェックの条件に含む。
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyymmdd");
             sdf.setLenient(false);
             sdf.parse(publishDate);
 
         } catch (ParseException pe) {
-            flag = true;
-            model.addAttribute("wrongDate", "正しい日付ではありません");
-
+            flag1 = true;
+            model.addAttribute("wrongDate", "出版日は半角数字のYYYYMMDD形式で入力して下さい");
         }
-        if (flag) {
+
+        if (flag1) {
             return "editBook";
         }
+
+        ////        //ISBNと日付の両方にエラーがあるとき
+        ////        if (flag1 || flag2) {
+        ////            model.addAttribute("Error1", "ISBNの桁数または半角数字が正しくありません");
+        ////            model.addAttribute("Error2", "出版日は半角数字のYYYYMMDD形式で入力して下さい");
+        ////            return "editbook";
+        ////
+        ////          //ISBNにエラーがあるとき
+        ////      } else if (flag1 != flag2 || flag1) {
+        ////          model.addAttribute("Error1", "ISBNの桁数または半角数字が正しくありません");
+        ////            return "editbook";
+        ////
+        ////          //日付にエラーがあるとき
+        ////      } else if (flag1 != flag2 || flag2) {
+        ////          model.addAttribute("Error2", "出版日は半角数字のYYYYMMDD形式で入力して下さい");
+        ////            return "editbook";
+        //        }
 
         //編集した書籍情報をMySQLのUPDATEする
         booksService.editBook(bookInfo);

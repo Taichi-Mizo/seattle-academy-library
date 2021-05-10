@@ -119,7 +119,6 @@ public class AddBooksController {
         } catch (ParseException pe) {
             flag = true;
             model.addAttribute("wrongDate", "正しい日付ではありません");
-
         }
         if (flag) {
             return "addBook";
