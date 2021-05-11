@@ -150,4 +150,5 @@ public class BooksService {
         String sql = "delete from lendMng where id =" + bookId + ";";
         jdbcTemplate.update(sql);
     }
+
 }
