@@ -38,7 +38,7 @@ public class BooksService {
         // TODO 取得したい情報を取得するようにSQLを修正
         //remake
         List<BookInfo> getedBookList = jdbcTemplate.query(
-                "select id, title, author, publisher, publish_date, thumbnail_url from books order by title asc",
+                "select book_id, title, author, publisher, publish_date, thumbnail_url from books order by title asc",
                 new BookInfoRowMapper());
 
         return getedBookList;
@@ -55,7 +55,7 @@ public class BooksService {
     public BookDetailsInfo getBookInfo(int bookId) {
 
         // JSPに渡すデータを設定する。上記で取得したbookIdを元にSQL内の書籍の詳細を呼び出す。
-        String sql = "SELECT * FROM books where id ="
+        String sql = "SELECT * FROM books where book_id ="
                 + bookId + ";";
         //SQLから取得した
         BookDetailsInfo bookDetailsInfo = jdbcTemplate.queryForObject(sql, new BookDetailsInfoRowMapper());
@@ -64,8 +64,14 @@ public class BooksService {
     }
 
     //ホーム画面で指定した書籍のbookIdがlendMngにあるか確認する。DetailsControllerにて使用。
+    //    public int cfmLend(int bookId) {
+    //        String sql = "select lend_id from lendMng where book_id =" + bookId;
+    //        int lendId = jdbcTemplate.queryForObject(sql, Integer.class);
+    //        return lendId;
+    //    }
+    //book_idに対応するlend_idの個数を数える。0個なら貸出可能、1個なら貸出不可能の処理を行う。
     public int cfmLend(int bookId) {
-        String sql = "select lend_id from lendMng where id =" + bookId;
+        String sql = "select count(lend_id) from lendMng where book_id =" + bookId;
         int lendId = jdbcTemplate.queryForObject(sql, Integer.class);
         return lendId;
     }
@@ -88,7 +94,7 @@ public class BooksService {
 
     //方法１：登録したidをSQLから取得する。
     public int bookId() {
-        String sql = "select max(id) from books;";
+        String sql = "select max(book_id) from books;";
         int bookId = jdbcTemplate.queryForObject(sql, Integer.class);
 
         return bookId;
@@ -105,7 +111,7 @@ public class BooksService {
                 + "',publish_date='" + bookInfo.getPublishDate() + "',thumbnail_url='" + bookInfo.getThumbnailUrl()
                 + "',thumbnail_name='" + bookInfo.getThumbnail()
                 + "',upd_date=" + "sysdate()," + "isbn='" + bookInfo.getIsbn() + "',comments='" + bookInfo.getComments()
-                + "' where id =" + bookInfo.getBookId() + ";";
+                + "' where book_id =" + bookInfo.getBookId() + ";";
 
         jdbcTemplate.update(sql);
         //編集内容を登録するだけだから、戻り値はなくても良い。
@@ -128,7 +134,7 @@ public class BooksService {
      * @param bookId
      */
     public void deleteBookInfo(int bookId) {
-        String sql = "delete from books where id =" + bookId + ";";
+        String sql = "delete from books where book_id =" + bookId + ";";
         jdbcTemplate.update(sql);
     }
 
@@ -137,7 +143,7 @@ public class BooksService {
      * @param bookId
      */
     public void lendBook(int bookId) {
-        String sql = "insert into lendMng(id) values('" + bookId + "');";
+        String sql = "insert into lendMng(book_id) values('" + bookId + "');";
         //sqlの実行
         jdbcTemplate.update(sql);
     }
@@ -147,7 +153,7 @@ public class BooksService {
      * @param bookId
      */
     public void returnBook(int bookId) {
-        String sql = "delete from lendMng where id =" + bookId + ";";
+        String sql = "delete from lendMng where book_id =" + bookId + ";";
         jdbcTemplate.update(sql);
     }
 }
