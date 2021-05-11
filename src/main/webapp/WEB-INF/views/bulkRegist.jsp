@@ -60,15 +60,11 @@
                     <!-- ファイルの選択 -->
                     <div class="addBookBtn_box">
                         <input type="file" accept=".csv" name="fileReader" id="filereader">
-                        <c:if test="${!empty erMsg}">
-                            <div class="error">${erMsg}</div>
-                        </c:if>
-                      <%--   <c:if test="${!empty ise}">
-                            <div class="error">${ise}</div>
-                        </c:if>
-                        <c:if test="${!empty ioe}">
-                            <div class="error">${ioe}</div>
-                        </c:if> --%>
+                        <c:forEach items="${erMsg}" var="list">
+                            <div class="error">
+                                <c:out value="${list}" />
+                            </div>
+                        </c:forEach>
                         <c:if test="${!empty resultMessage}">
                             <div class="error">${resultMessage}</div>
                         </c:if>

@@ -34,31 +34,18 @@ public class BulkRegController {
     @Autowired
     private BooksService booksService;
 
-    //    @Autowired
-    //    private ThumbnailService thumbnailService;
-
     //RequestParamでname属性を取得, value＝actionで指定したパラメータ
     @RequestMapping(value = "/bulkRegist", method = RequestMethod.GET)
 
-    public String login(Model model) {
+    public String bulk(Model model) {
         return "bulkRegist";
     }
 
     /**
-     * 書籍情報を登録する
-     * @param locale ロケール情報
-     * @param title 書籍名
-     * @param author 著者名
-     * @param publisher 出版社
-     * @param file サムネイルファイル
+     * @param locale ローケル情報
+     * @param readFile クライアントが選択したファイル
      * @param model モデル
      * @return 遷移先画面
-     */
-    /**
-     * @param locale
-     * @param readFile
-     * @param model
-     * @return
      */
     @Transactional
     @RequestMapping(value = "/uploadFile", method = RequestMethod.POST, produces = "text/plain;charset=utf-8")
@@ -68,8 +55,6 @@ public class BulkRegController {
             Model model) {
 
         logger.info("Welcome insertBooks.java! The client locale is {}.", locale);
-
-        String[] splitLine = new String[6];
 
         //リスト1(csvから取得した)を作成。データ型には配列型のStringを指定。
         ArrayList<String[]> books = new ArrayList<String[]>();
@@ -91,6 +76,7 @@ public class BulkRegController {
             while ((line = br.readLine()) != null) {
                 //ファイルの中身はただの文字列。読み込んだlineの各値をカンマで区切り、配列にする。
                 //要素の数だけ、配列の箱に入れる。splitではnullの場合(,,)も認知できる。
+                String[] splitLine = new String[6];
                 splitLine = line.split(",", -1);
 
                 //配列の要素に名前をつけて、バリデーションチェックで配列の変数を呼び出しやすくする。
@@ -129,12 +115,11 @@ public class BulkRegController {
             } //while-close.
               //ストリームを閉じて、BufferedReaderのリソースを開放。                
             br.close();
-
         } catch (IOException ie) {
             model.addAttribute("erMsg", "ファイル読み込みに失敗しました。");
         }
 
-        //while文で全ての行を読み取った後、errorLowsリストを要素の数だけ展開する。 
+        //while文で全ての行を読み取った後、errorLowsリストを要素の数だけ展開する。 errorLowsリストをjspに返す。
         if (errorLows.size() > 0) {
             model.addAttribute("erMsg", errorLows);
             return "bulkRegist";

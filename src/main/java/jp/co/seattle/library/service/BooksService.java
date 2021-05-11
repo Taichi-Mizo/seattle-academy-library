@@ -156,4 +156,5 @@ public class BooksService {
         String sql = "delete from lendMng where book_id =" + bookId + ";";
         jdbcTemplate.update(sql);
     }
+
 }
