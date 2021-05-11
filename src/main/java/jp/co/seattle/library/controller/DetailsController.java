@@ -5,6 +5,7 @@ import java.util.Locale;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -39,6 +40,15 @@ public class DetailsController {
         // デバッグ用ログ
         logger.info("Welcome detailsControler.java! The client locale is {}.", locale);
 
+        try {
+            //lend_idの有無に応じて、詳細画面に貸出不可か貸出可能かを表示する。
+            int lendId = bookdService.cfmLend(bookId);
+            if (lendId != 0) {
+                model.addAttribute("unavailable", "貸出不可");
+            }
+        } catch (EmptyResultDataAccessException e) {
+            model.addAttribute("available", "貸出可能");
+        }
         model.addAttribute("bookDetailsInfo", bookdService.getBookInfo(bookId));
 
         return "details";

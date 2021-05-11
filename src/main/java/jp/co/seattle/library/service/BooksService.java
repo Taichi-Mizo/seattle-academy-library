@@ -56,11 +56,18 @@ public class BooksService {
 
         // JSPに渡すデータを設定する。上記で取得したbookIdを元にSQL内の書籍の詳細を呼び出す。
         String sql = "SELECT * FROM books where id ="
-                + bookId;
+                + bookId + ";";
         //SQLから取得した
         BookDetailsInfo bookDetailsInfo = jdbcTemplate.queryForObject(sql, new BookDetailsInfoRowMapper());
 
         return bookDetailsInfo;
+    }
+
+    //ホーム画面で指定した書籍のbookIdがlendMngにあるか確認する。DetailsControllerにて使用。
+    public int cfmLend(int bookId) {
+        String sql = "select lend_id from lendMng where id =" + bookId;
+        int lendId = jdbcTemplate.queryForObject(sql, Integer.class);
+        return lendId;
     }
 
     /**
@@ -79,7 +86,7 @@ public class BooksService {
         jdbcTemplate.update(sql);
     }
 
-    //方法１：登録したidをSQLから取得する。Q.第二引数のInteger.classとは何か。
+    //方法１：登録したidをSQLから取得する。
     public int bookId() {
         String sql = "select max(id) from books;";
         int bookId = jdbcTemplate.queryForObject(sql, Integer.class);
@@ -117,9 +124,30 @@ public class BooksService {
     }
 
     //書籍を削除する
+    /**
+     * @param bookId
+     */
     public void deleteBookInfo(int bookId) {
-        String sql = "delete from books where Id =" + bookId + ";";
+        String sql = "delete from books where id =" + bookId + ";";
         jdbcTemplate.update(sql);
     }
 
+    //sql:詳細画面から取得したbookIdを,lendMngテーブルのidに登録をする。
+    /**
+     * @param bookId
+     */
+    public void lendBook(int bookId) {
+        String sql = "insert into lendMng(id) values('" + bookId + "');";
+        //sqlの実行
+        jdbcTemplate.update(sql);
+    }
+
+    //sql:受け取ったbookIdを where文の条件式に入れて、対応するlend_idとidを削除する。
+    /**
+     * @param bookId
+     */
+    public void returnBook(int bookId) {
+        String sql = "delete from lendMng where id =" + bookId + ";";
+        jdbcTemplate.update(sql);
+    }
 }
