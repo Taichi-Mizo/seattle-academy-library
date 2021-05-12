@@ -132,6 +132,7 @@ public class AddBooksController {
         int bookDetailsInfo = booksService.bookId();
         BookDetailsInfo newBookDetails = booksService.getBookInfo(bookDetailsInfo);
         model.addAttribute("bookDetailsInfo", newBookDetails);
+        model.addAttribute("available", "貸出可能");
 
         //  詳細画面に遷移する
         return "details";

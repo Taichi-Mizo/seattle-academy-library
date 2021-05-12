@@ -42,6 +42,12 @@
                         </c:if> <input type="hidden" name="bookId" value="${bookDetailsInfo.bookId}">
                     </a>
                 </div>
+                <c:if test="${!empty available}">
+                    <div class="error">${available}</div>
+                </c:if>
+                <c:if test="${!empty unavailable}">
+                    <div class="error">${unavailable}</div>
+                </c:if>
             </div>
             <div class="content_right">
                 <div>
@@ -71,18 +77,46 @@
             </div>
         </div>
         <div class="edtDelBookBtn_box">
-            <form method="post" action="rentBook">
-                <button type="submit" value="${bookDetailsInfo.bookId}" name="bookId" class="btn_rentBook">借りる</button>
-            </form>
-            <form method="post" action="returnBook">
-                <button type="submit" value="${bookDetailsInfo.bookId}" name="bookId" class="btn_returnBook">返す</button>
-            </form>
-            <form method="post" action="editBook">
-                <button type="submit" value="${bookDetailsInfo.bookId}" name="bookId" class="btn_editBook">編集</button>
-            </form>
-            <form method="post" action="deleteBook">
-                <button type="submit" value="${bookDetailsInfo.bookId}" name="bookId" class="btn_deleteBook">削除</button>
-            </form>
+            <c:if test="${!empty unavailable}">
+                <form method="post" action="rentBook">
+                    <button type="submit" value="${bookDetailsInfo.bookId}" name="bookId" class="btn_rentBook" disabled>借りる</button>
+                </form>
+            </c:if>
+            <c:if test="${!empty available}">
+                <form method="post" action="rentBook">
+                    <button type="submit" value="${bookDetailsInfo.bookId}" name="bookId" class="btn_rentBook">借りる</button>
+                </form>
+            </c:if>
+            <c:if test="${!empty unavailable}">
+                <form method="post" action="returnBook">
+                    <button type="submit" value="${bookDetailsInfo.bookId}" name="bookId" class="btn_returnBook">返す</button>
+                </form>
+            </c:if>
+            <c:if test="${!empty available}">
+                <form method="post" action="returnBook">
+                    <button type="submit" value="${bookDetailsInfo.bookId}" name="bookId" class="btn_returnBook" disabled>返す</button>
+                </form>
+            </c:if>
+            <c:if test="${!empty available}">
+                <form method="post" action="editBook">
+                    <button type="submit" value="${bookDetailsInfo.bookId}" name="bookId" class="btn_editBook">編集</button>
+                </form>
+            </c:if>
+            <c:if test="${!empty unavailable}">
+                <form method="post" action="editBook">
+                    <button type="submit" value="${bookDetailsInfo.bookId}" name="bookId" class="btn_editBook" disabled>編集</button>
+                </form>
+            </c:if>
+            <c:if test="${!empty available}">
+                <form method="post" action="deleteBook">
+                    <button type="submit" value="${bookDetailsInfo.bookId}" name="bookId" class="btn_deleteBook">削除</button>
+                </form>
+            </c:if>
+            <c:if test="${!empty unavailable}">
+                <form method="post" action="deleteBook">
+                    <button type="submit" value="${bookDetailsInfo.bookId}" name="bookId" class="btn_deleteBook" disabled>削除</button>
+                </form>
+            </c:if>
         </div>
     </main>
 </body>

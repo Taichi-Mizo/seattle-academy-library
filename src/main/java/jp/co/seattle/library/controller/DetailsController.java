@@ -38,7 +38,14 @@ public class DetailsController {
             Model model) {
         // デバッグ用ログ
         logger.info("Welcome detailsControler.java! The client locale is {}.", locale);
+        //lendMngテーブルないのlend_idがあるかないかをbook_idを元に確認する。
+        int lendId = bookdService.cfmLend(bookId);
 
+            //lend_idの有無に応じて、詳細画面に貸出不可か貸出可能かを表示する。
+            if (lendId == 1) {
+                model.addAttribute("unavailable", "貸出不可");
+            } else {model.addAttribute("available", "貸出可能");
+        }
         model.addAttribute("bookDetailsInfo", bookdService.getBookInfo(bookId));
 
         return "details";
