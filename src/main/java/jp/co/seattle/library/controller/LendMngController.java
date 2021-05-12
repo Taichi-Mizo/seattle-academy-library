@@ -39,7 +39,7 @@ public class LendMngController {
     @Transactional
     @RequestMapping(value = "/rentBook", method = RequestMethod.POST, produces = "text/plain;charset=utf-8")
 
-    public String insertBook(Locale locale,
+    public String lendBook(Locale locale,
             @RequestParam("bookId") int bookId,
             Model model) {
 

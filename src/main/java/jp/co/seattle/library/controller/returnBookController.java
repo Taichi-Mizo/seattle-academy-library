@@ -39,7 +39,7 @@ public class returnBookController {
     @Transactional
     @RequestMapping(value = "/returnBook", method = RequestMethod.POST, produces = "text/plain;charset=utf-8")
 
-    public String insertBook(Locale locale,
+    public String returnBook(Locale locale,
             @RequestParam("bookId") int bookId,
             Model model) {
 

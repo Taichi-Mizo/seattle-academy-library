@@ -63,13 +63,6 @@ public class BooksService {
         return bookDetailsInfo;
     }
 
-    //ホーム画面で指定した書籍のbookIdがlendMngにあるか確認する。DetailsControllerにて使用。
-    //    public int cfmLend(int bookId) {
-    //        String sql = "select lend_id from lendMng where book_id =" + bookId;
-    //        int lendId = jdbcTemplate.queryForObject(sql, Integer.class);
-    //        return lendId;
-    //    }
-    //book_idに対応するlend_idの個数を数える。0個なら貸出可能、1個なら貸出不可能の処理を行う。
     public int cfmLend(int bookId) {
         String sql = "select count(lend_id) from lendMng where book_id =" + bookId;
         int lendId = jdbcTemplate.queryForObject(sql, Integer.class);
@@ -114,7 +107,6 @@ public class BooksService {
                 + "' where book_id =" + bookInfo.getBookId() + ";";
 
         jdbcTemplate.update(sql);
-        //編集内容を登録するだけだから、戻り値はなくても良い。
     }
 
     /**
