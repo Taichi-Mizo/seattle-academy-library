@@ -36,7 +36,7 @@ public class LoginController {
      * @param email メールアドレス
      * @param password パスワード
      * @param model
-     * @return　ホーム画面に遷移
+     * @return ホーム画面に遷移3
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public String login(
@@ -44,8 +44,10 @@ public class LoginController {
             @RequestParam("password") String password,
             Model model) {
 
-        // TODO 下記のコメントアウトを外してサービスクラスを使用してください。
+        // usersテーブルから取得したユーザー情報をUserInfoに格納している。
         UserInfo selectedUserInfo = usersService.selectUserInfo(email, password);
+        //UserInfo userInfo = new UserInfo();
+        model.addAttribute("userInfo", selectedUserInfo);
 
         // TODO パスワードとメールアドレスの組み合わせ存在チェック実装
 
@@ -53,7 +55,6 @@ public class LoginController {
             model.addAttribute("errorMessage", "パスワードとメールアドレスが一致しません");
             return "login";
         }
-
 
         // 本の情報を取得して画面側に渡す
         model.addAttribute("bookList", booksService.getBookList());

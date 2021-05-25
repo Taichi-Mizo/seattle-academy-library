@@ -44,15 +44,16 @@ public class UsersService {
      * @return ユーザー情報
      */
     public UserInfo selectUserInfo(String email, String password) {
-        // TODO SQL生成
+        // TODO SQL生成,usersテーブルからID,email,passwordを取得している。
         String sql = "SELECT id, email, password From users WHERE password = '" + password + "'AND email = '" + email
                 + "';";
         try {
-        UserInfo selectedUserInfo = jdbcTemplate.queryForObject(sql, new UserCountRowMapper());
-        return selectedUserInfo;
+            UserInfo selectedUserInfo = jdbcTemplate.queryForObject(sql, new UserCountRowMapper());
+            return selectedUserInfo;
         } catch (EmptyResultDataAccessException e) {
-        return null;
-    }
+            return null;
+        }
 
     }
+
 }

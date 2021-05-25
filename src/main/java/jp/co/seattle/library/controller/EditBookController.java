@@ -35,11 +35,13 @@ public class EditBookController {
     @RequestMapping(value = "/editBook", method = RequestMethod.POST) //value＝actionで指定したパラメータ
     //RequestParamでname属性を取得
     //details.jspから取得したbookIdを元に、書籍の詳細情報を呼び出し、editBook.jpsに渡す。
-    public String login(
+    public String detailsInfo(
             @RequestParam("bookId") int bookId,
             Model model) {
         BookDetailsInfo newBookDetails = booksService.getBookInfo(bookId);
         model.addAttribute("bookDetailsInfo", newBookDetails);
+        //        String imgUrl = thumbnailService.getURL;
+        //        model.addAttribute("thumnail", imgUrl);
 
         return "editBook";
     }
@@ -62,7 +64,7 @@ public class EditBookController {
     @RequestMapping(value = "/updateBook", method = RequestMethod.POST, produces = "text/plain;charset=utf-8")
 
     //ここで入力値を受け取る。
-    public String insertBook(Locale locale,
+    public String editBook(Locale locale,
             @RequestParam("bookId") int bookId,
             @RequestParam("title") String title,
             @RequestParam("author") String author,
@@ -109,20 +111,18 @@ public class EditBookController {
         }
 
         //バリデーションチェック
-        boolean isValidIsbn = isbn.matches("^[0-9]+$");
+        //ISBNは10桁もしくは13桁の半角数字。
+        boolean isValidIsbn = isbn.matches("[0-9]{10}?$||[0-9]{13}?$");
         boolean isError = false;
-        //boolean flag2 = false;
 
         //isbn、dateでエラー、もしくは両方でエラーが起きた時にaddBookに戻れるように、
-
-        //isbnの桁数が１０桁または１３桁以外で例外。
-        //入力するのは数字だけ。0-9。
-        StringBuilder sb = new StringBuilder(isbn);
-        if (!isValidIsbn || sb.length() != 10 && sb.length() != 13) {
+        //ISBNの入力がある時とないときで、処理内容を分ける。
+        //if (isbn.length() != 0) {
+        if (!isValidIsbn) {
             isError = true;
             model.addAttribute("errorMsg", "ISBNの桁数または半角数字が正しくありません");
         }
-
+        //}
         //日付のvalidation check, //yyyymmdd
         //半角英数字もバリデーションチェックの条件に含む。
         try {
@@ -136,25 +136,9 @@ public class EditBookController {
         }
 
         if (isError) {
+            model.addAttribute("bookDetailsInfo", bookInfo);
             return "editBook";
         }
-
-        ////        //ISBNと日付の両方にエラーがあるとき
-        ////        if (flag1 || flag2) {
-        ////            model.addAttribute("Error1", "ISBNの桁数または半角数字が正しくありません");
-        ////            model.addAttribute("Error2", "出版日は半角数字のYYYYMMDD形式で入力して下さい");
-        ////            return "editbook";
-        ////
-        ////          //ISBNにエラーがあるとき
-        ////      } else if (flag1 != flag2 || flag1) {
-        ////          model.addAttribute("Error1", "ISBNの桁数または半角数字が正しくありません");
-        ////            return "editbook";
-        ////
-        ////          //日付にエラーがあるとき
-        ////      } else if (flag1 != flag2 || flag2) {
-        ////          model.addAttribute("Error2", "出版日は半角数字のYYYYMMDD形式で入力して下さい");
-        ////            return "editbook";
-        //        }
 
         //編集した書籍情報をMySQLのUPDATEする
         booksService.editBook(bookInfo);

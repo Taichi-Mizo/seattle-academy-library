@@ -99,7 +99,7 @@
                             </c:if>
                         </div>
                         <div>
-                            <span>ISBN</span>
+                            <span>ISBN</span><span class="care care1">任意</span>
                             <c:if test="${!empty bookInfo}">
                                 <input type="text" name="isbn" value="${bookInfo.isbn}">
                             </c:if>
@@ -111,7 +111,7 @@
                             </c:if>
                         </div>
                         <div>
-                            <span>説明文</span>
+                            <span>説明文</span><span class="care care1">任意</span>
                             <c:if test="${!empty bookInfo}">
                                 <input type="text" name="comments" value="${bookInfo.comments}">
                             </c:if>
@@ -119,7 +119,7 @@
                                 <input type="text" name="comments" autocomplete="off">
                             </c:if>
                         </div>
-                        <%-- <input type="hidden" id="bookId" name="bookId" value="${bookInfo.bookId}"> --%>
+                        <input type="hidden" id="bookId" name="bookId" value="${bookInfo.bookId}">
                     </div>
                 </div>
                 <div class="addBookBtn_box">
