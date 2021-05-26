@@ -40,7 +40,7 @@
                             <img class="book_noimg" src="resources/img/noImg.png">
                         </c:if> <c:if test="${!empty bookDetailsInfo.thumbnailUrl}">
                             <img class="book_img" src="${bookDetailsInfo.thumbnailUrl}">
-                        </c:if> <%-- <input type="hidden" name="bookId" value="${bookDetailsInfo.bookId}"> --%>
+                        </c:if>
                     </a>
                 </div>
                 <c:if test="${!empty available}">

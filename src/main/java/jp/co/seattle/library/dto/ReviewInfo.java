@@ -10,7 +10,7 @@ import lombok.Data;
 @Configuration
 @Data
 // input info from users is included as follows
-public class reviewInfo {
+public class ReviewInfo {
 
     private int userId;
 
@@ -18,12 +18,12 @@ public class reviewInfo {
 
     private String review;
 
-    public reviewInfo() {
+    public ReviewInfo() {
 
     }
 
     // コンストラクタ
-    public reviewInfo(int bookId, int userId, String review) {
+    public ReviewInfo(int bookId, int userId, String review) {
         this.userId = userId;
         this.bookId = bookId;
         this.review = review;

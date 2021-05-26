@@ -14,24 +14,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import jp.co.seattle.library.dto.reviewInfo;
+import jp.co.seattle.library.dto.ReviewInfo;
 import jp.co.seattle.library.service.BooksService;
-import jp.co.seattle.library.service.ChatService;
+import jp.co.seattle.library.service.ReviewService;
 
 /**
- * 詳細表示コントローラー
+ * レビュー表示コントローラー
  */
 @Controller
 public class ReviewController {
-    final static Logger logger = LoggerFactory.getLogger(ChatService.class);
+    final static Logger logger = LoggerFactory.getLogger(ReviewService.class);
 
     @Autowired
-    private ChatService chatService;
+    private ReviewService reviewService;
 
     @Autowired
     private BooksService booksService;
 
-    /**
+    /**書籍レビュー取得メソッド
      * @param locale
      * @param userId ユーザーID
      * @param bookId 書籍ID
@@ -51,9 +51,8 @@ public class ReviewController {
 
         logger.info("Welcome insertBooks.java! The client locale is {}.", locale);
 
-        // パラメータで受け取った書籍情報をDtoに格納する。
-        //のちにMySQLへの入力がしやすいようにUserInfoからBookDeatailsInfoにもsetする。
-        reviewInfo reviewInfo = new reviewInfo();
+        // パラメータで受け取ったレビュー情報をDtoに格納する。
+        ReviewInfo reviewInfo = new ReviewInfo();
         reviewInfo.setUserId(userId);
         reviewInfo.setBookId(bookId);
         reviewInfo.setReview(review);
@@ -61,7 +60,7 @@ public class ReviewController {
         //レビューの入力があった時に、以下の処理が事項される。
         if (!StringUtils.isEmpty(reviewInfo.getReview()) && reviewInfo.getReview().length() <= 280) {
             //ユーザーIDとレビューをchatHisテーブルに入力(戻り値なし)
-            chatService.registReviews(reviewInfo);
+            reviewService.registReviews(reviewInfo);
             model.addAttribute("postCfm", "投稿しました！");
         } else {
             String errorMsg = "入力に誤りがあります。";
@@ -69,7 +68,7 @@ public class ReviewController {
         }
 
         //DBからレコードの取得
-        List<reviewInfo> reviewList = chatService.getReviewList(reviewInfo);
+        List<ReviewInfo> reviewList = reviewService.getReviewList(reviewInfo);
 
         model.addAttribute("reviewList", reviewList);
 

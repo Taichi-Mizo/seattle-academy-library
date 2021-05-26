@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import jp.co.seattle.library.dto.reviewInfo;
+import jp.co.seattle.library.dto.ReviewInfo;
 import jp.co.seattle.library.service.BooksService;
-import jp.co.seattle.library.service.ChatService;
+import jp.co.seattle.library.service.ReviewService;
 
 /**
  * 詳細表示コントローラー
@@ -28,7 +28,7 @@ public class DetailsController {
     private BooksService booksService;
 
     @Autowired
-    private ChatService chatService;
+    private ReviewService reviewService;
 
     //    @Autowired
     //    private ChatService chatService;
@@ -56,11 +56,11 @@ public class DetailsController {
         model.addAttribute("bookDetailsInfo", booksService.getBookInfo(bookId));
 
         //home.jspから取得したuserIdをdetails.jspに返す。
-        reviewInfo reviewInfo = new reviewInfo();
+        ReviewInfo reviewInfo = new ReviewInfo();
         reviewInfo.setUserId(userId);
 
         //ホーム画面から遷移したときにレビューリストを詳細画面に返す。
-        List<reviewInfo> reviewList = chatService.getReviewList(reviewInfo);
+        List<ReviewInfo> reviewList = reviewService.getReviewList(reviewInfo);
 
         model.addAttribute("reviewList", reviewList);
 
