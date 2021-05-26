@@ -29,5 +29,3 @@ public class BookDetailsInfoRowMapper implements RowMapper<BookDetailsInfo> {
     }
 
 }
-
-//書籍詳細画面にISBNとcomments(説明文)を追加済み。

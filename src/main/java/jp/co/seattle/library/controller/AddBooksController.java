@@ -97,30 +97,29 @@ public class AddBooksController {
         }
 
         //バリデーションチェック
-        boolean isValidIsbn = isbn.matches("^[0-9]+$");
-        boolean flag = false;
+        boolean isValidIsbn = isbn.matches("[0-9]{10}?$||[0-9]{13}?$");
+        boolean isError = false;
 
-        //isbn、dateでエラー、もしくは両方でエラーが起きた時にaddBookに戻れるように、
-
-        //isbnの桁数が１０桁または１３桁以外で例外。
-        //入力するのは数字だけ。0-9。
-        StringBuilder sb = new StringBuilder(isbn);
-        if (!isValidIsbn || sb.length() != 10 && sb.length() != 13) {
-            flag = true;
+        //isbn、dateでエラー、もしくは両方でエラーが起きた時にaddBookに戻れるようにisErrorを設置。
+        //ISBNの入力がある時とないときで、処理内容を分ける。
+        if (!isValidIsbn) {
+            isError = true;
             model.addAttribute("errorMsg", "入力内容が正しくありません");
         }
 
         //日付のvalidation check, //yyyymmdd
-        try {
+        try
+
+        {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyymmdd");
             sdf.setLenient(false);
             sdf.parse(publishDate);
 
         } catch (ParseException pe) {
-            flag = true;
+            isError = true;
             model.addAttribute("wrongDate", "正しい日付ではありません");
         }
-        if (flag) {
+        if (isError) {
             return "addBook";
         }
 
@@ -130,7 +129,8 @@ public class AddBooksController {
 
         // TODO 登録した書籍の詳細情報を表示するように実装
         int bookDetailsInfo = booksService.bookId();
-        BookDetailsInfo newBookDetails = booksService.getBookInfo(bookDetailsInfo);
+        BookDetailsInfo newBookDetails = booksService.getBookInfo(
+                bookDetailsInfo);
         model.addAttribute("bookDetailsInfo", newBookDetails);
         model.addAttribute("available", "貸出可能");
 

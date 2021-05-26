@@ -90,7 +90,7 @@ public class BulkRegController {
                 books.add(splitLine);
 
                 //ISBNの正規表現
-                boolean isValidIsbn = prepI.matches("^[0-9]+$");
+                boolean isValidIsbn = prepI.matches("[0-9]{10}?$||[0-9]{13}?$");
 
                 //バリデーションチェック(VC)、必須項目(title,author,publisher,publishDate)に対して。
                 if (prepT.isEmpty() || prepA.isEmpty() || prepP.isEmpty() || prepPD.isEmpty()) {
@@ -108,8 +108,8 @@ public class BulkRegController {
                     errorLows.add(books.size() + "冊目の出版日の形式が正しくありません。");
                 }
                 //VC - ISBN
-                StringBuilder sb = new StringBuilder(prepI);
-                if (!isValidIsbn || sb.length() != 10 && sb.length() != 13) {
+
+                if (!isValidIsbn) {
                     errorLows.add(books.size() + "冊目のISBNの記法が正しくありません。");
                 }
             } //while-close.

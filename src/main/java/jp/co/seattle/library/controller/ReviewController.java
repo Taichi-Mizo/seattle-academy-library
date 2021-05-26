@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,22 +19,19 @@ import jp.co.seattle.library.service.BooksService;
 import jp.co.seattle.library.service.ReviewService;
 
 /**
- * 詳細表示コントローラー
+ * レビュー表示コントローラー
  */
 @Controller
-public class DetailsController {
-    final static Logger logger = LoggerFactory.getLogger(BooksService.class);
-
-    @Autowired
-    private BooksService booksService;
+public class ReviewController {
+    final static Logger logger = LoggerFactory.getLogger(ReviewService.class);
 
     @Autowired
     private ReviewService reviewService;
 
-    //    @Autowired
-    //    private ChatService chatService;
+    @Autowired
+    private BooksService booksService;
 
-    /**
+    /**書籍レビュー取得メソッド
      * @param locale
      * @param userId ユーザーID
      * @param bookId 書籍ID
@@ -42,27 +40,40 @@ public class DetailsController {
      * @return
      */
     @Transactional
-    @RequestMapping(value = "/details", method = RequestMethod.POST)
+    @RequestMapping(value = "/reviewBook", method = RequestMethod.POST)
 
     //ここで入力値を受け取る。
-    public String detailsBook(Locale locale,
-            @RequestParam("bookId") int bookId,
+    public String reviewBook(Locale locale,
             @RequestParam("userId") int userId,
+            @RequestParam("bookId") int bookId,
+            @RequestParam("reviewPosted") String review,
             Model model) {
 
         logger.info("Welcome insertBooks.java! The client locale is {}.", locale);
 
-        //書籍の詳細
-        model.addAttribute("bookDetailsInfo", booksService.getBookInfo(bookId));
-
-        //home.jspから取得したuserIdをdetails.jspに返す。
+        // パラメータで受け取ったレビュー情報をDtoに格納する。
         ReviewInfo reviewInfo = new ReviewInfo();
         reviewInfo.setUserId(userId);
+        reviewInfo.setBookId(bookId);
+        reviewInfo.setReview(review);
 
-        //ホーム画面から遷移したときにレビューリストを詳細画面に返す。
+        //レビューの入力があった時に、以下の処理が事項される。
+        if (!StringUtils.isEmpty(reviewInfo.getReview()) && reviewInfo.getReview().length() <= 280) {
+            //ユーザーIDとレビューをchatHisテーブルに入力(戻り値なし)
+            reviewService.registReviews(reviewInfo);
+            model.addAttribute("postCfm", "投稿しました！");
+        } else {
+            String errorMsg = "入力に誤りがあります。";
+            model.addAttribute("postError", errorMsg);
+        }
+
+        //DBからレコードの取得
         List<ReviewInfo> reviewList = reviewService.getReviewList(reviewInfo);
 
         model.addAttribute("reviewList", reviewList);
+
+        //書籍の詳細
+        model.addAttribute("bookDetailsInfo", booksService.getBookInfo(bookId));
 
         //lendMngテーブルないのlend_idがあるかないかをbook_idを元に確認する。
         int lendId = booksService.cfmLend(bookId);
@@ -77,4 +88,5 @@ public class DetailsController {
         return "details";
 
     }
+
 }

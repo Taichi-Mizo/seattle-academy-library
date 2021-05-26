@@ -54,9 +54,20 @@
                     <div>
                         <span>書籍の画像</span> <span class="care care1">任意</span>
                         <div class="book_thumbnail">
-                            <img class="book_noimg" src="resources/img/noImg.png">
+                            <c:if test="${!empty bookDetailsInfo.thumbnailUrl}">
+                                <img class="book_img" src="${bookDetailsInfo.thumbnailUrl}">
+                            </c:if>
+                            <c:if test="${empty bookDetailsInfo.thumbnailUrl}">
+                                <img class="book_noimg" src="resources/img/noImg.png">
+                                <input type="file" accept="image/*" name="thumbnail" id="thumbnail">
+                            </c:if>
                         </div>
-                        <input type="file" accept="image/*" name="thumbnail" id="thumbnail">
+                        <c:if test="${!empty bookDetailsInfo.thumbnailUrl}">
+                            <input type="file" accept="image/*" name="thumbnail" id="thumbnail">
+                        </c:if>
+                        <%-- <c:if test="${empty bookDetailsInfo.thumbnailUrl}">
+                            <input type="file" accept="image/*" name="thumbnail" id="thumbnail">
+                        </c:if> --%>
                     </div>
                     <div class="content_right">
                         <div>
@@ -101,7 +112,7 @@
                             </c:if>
                         </div>
                         <div>
-                            <span>ISBN</span>
+                            <span>ISBN</span><span class="care care1">任意</span>
                             <c:if test="${!empty bookDetailsInfo}">
                                 <input type="text" name="isbn" value="${bookDetailsInfo.isbn}">
                             </c:if>
@@ -110,7 +121,7 @@
                             </c:if>
                         </div>
                         <div>
-                            <span>説明文</span>
+                            <span>説明文</span><span class="care care1">任意</span>
                             <c:if test="${!empty bookDetailsInfo}">
                                 <input type="text" name="comments" value="${bookDetailsInfo.comments}">
                             </c:if>
@@ -124,6 +135,9 @@
                 <div class="addBookBtn_box">
                     <button type="submit" id="add-btn" class="btn_addBook">更新</button>
                 </div>
+                <c:if test="${!empty resultMessage}">
+                    <p>${resultMessage}</p>
+                </c:if>
             </form>
         </div>
     </main>
